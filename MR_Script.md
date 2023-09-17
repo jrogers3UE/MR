@@ -5,7 +5,7 @@
 # R Version: 
 
 # Written by: JR 17 Aug 2023
-# Last updated: JR 17 Aug 2023
+# Last updated: JR 17 Sep 2023
 
 
 ## PART 1: Install Packages ######
@@ -37,6 +37,7 @@ meta_critical_allcohorts_cleaned_tsv <- read.delim("~/Documents/MR/meta.critical
 
 
 
+
 ## PART 3: Reduce data set to rs number and MarkerName ######
 # Take rs reference data frame and make new "MarkerName" column
 all_COVID_merge <- COVID19_HGI_B2_ALL_leave_23andme_20220403.tsv %>%
@@ -53,6 +54,7 @@ twoC_all_COVID_merge <- all_COVID_merge %>%
 # Add sample size to GWAS dataframe and rename V3
 crit_gwas_data_renamed <- meta_critical_allcohorts_cleaned_tsv %>%
   rename("MarkerName" = V1) %>%
+  rename("samplesize_col" = V16) %>%
   mutate(Ncontrol = 1755569, Ncase = 24202) 
 
 # Merge "new_crit_gwas_data" and "twoC_all_COVID_merge" data by chromosome position "MarkerName"
@@ -61,7 +63,7 @@ rs_crit_gwas_merged <- merge(crit_gwas_data_renamed, twoC_all_COVID_merge, by = 
 
 
 
-`## PART 5: Reformat rs dataframe for T-cell data ####
+## PART 5: Reformat rs dataframe for T-cell data ####
 # Add chr to beginning of "MarkerName" in COVID19_HGI_... data set. It will be hard to delete chr from the entire column in the sc data set.
 chr_twoC_all_COVID_merge <- twoC_all_COVID_merge %>%
   mutate(Chr = "chr")
